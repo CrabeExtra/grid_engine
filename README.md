@@ -18,11 +18,14 @@ foreach(LIB_DIR ${LIB_DIRS})
         add_custom_target(copy_${LIB_DIR_NAME}_resources ALL
             COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${LIB_DIR}/resources/
-            $<TARGET_FILE_DIR:CalculatorWin>/resources
+            $<TARGET_FILE_DIR:YourProject>/resources
         )
     endif()
 endforeach()
+
 ## Notes
+
+Please replace 'YourProject' in the above foreach with your project name such as: $<TARGET_FILE_DIR:MyProject>/resources
 
 When creating a GUI grid. Please refer to layout/grid.hpp. Note that the parameter struct has defaults, the method for rendering, and note that for this to properly work, each grid element should be emplaced in the map under rootGrids in the display module.
 
