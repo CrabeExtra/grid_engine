@@ -8,7 +8,7 @@ static const GridConfig defaultButtonConfig = {
         .height = "50px"
     },
     .style = {
-        .gridDirection = GridDirection::Row,
+        .gridDirection = GridDirection::Col,
         .background_color = Theme::Surface,
         .border_color = 0xFFFFFF,
         .text = ">"
@@ -25,15 +25,64 @@ class Drawer : public Grid {
             // add the button to the root grid.
             // create button first (in inherited Grid base constructor) so it isn't added to the end of the container's elements list.
             
-            Grid* container = config.display.getRootGrids()[config.rootGridIndex][config.containerId];
+            auto& map = config.display.getRootGrids()[config.rootGridIndex];
+
+            Grid* container = map[config.containerId];
             
             setContainer(container); // set the container of the button to the specified container grid.
 
             std::vector<Grid*>& elements = container->getElements();
             elements.insert(elements.begin(), this); // add the button to the front of the elements vector so it is searched first for mouse input.
+            map.emplace(getId(), this);
             
             setInteractable(true); // set the button to be interactable.
+
+            // sidenav is off screen
+            Grid* sideNav = new Grid({
+                .id = "drawer_side_nav",
+                .coordinates = { -200.0f, 0.0f },
+                .size = {
+                    .width = "200px",
+                    .height = "100%"
+                },
+                .style = {
+                    .gridDirection = GridDirection::Col,
+                    .background_color = Theme::Surface,
+                    .border_color = 0xFFFFFF,
+                    .text = ""
+                },
+            });
+
+            elements.insert(elements.begin(), sideNav);
+            map.emplace(sideNav->getId(), sideNav);
+
+            for(auto& menuElementConfig : config.menuElements) {
+                menuElementConfig.container = sideNav; // set the container of the menu elements to the side nav grid.
+                auto currentElem = new Grid(menuElementConfig); // create the menu elements and add them to the side nav grid.
+                map.emplace(currentElem->getId(), currentElem);
+            }
+            
+            setOnClick([this, sideNav, config]() {
+                isOpen = !isOpen;
+
+                auto& sideNavCoords = sideNav->getCoordinates();
+                auto& buttonCoords = getCoordinates();
+
+                if(isOpen) {
+                    // open the drawer
+                    sideNav->setCoordinates({ sideNavCoords[0] + 200.0f, sideNavCoords[1] });
+                    setCoordinates({ buttonCoords[0] + 200.0f, buttonCoords[1] });
+                    setText("<");
+                } else {
+                    // close the drawer
+                    sideNav->setCoordinates({ sideNavCoords[0] - 200.0f, sideNavCoords[1] });
+                    setCoordinates({ buttonCoords[0] - 200.0f, buttonCoords[1] });
+                    setText(">");
+                }
+
+                config.display.invalidateWindow(); // trigger render.
+            });
         }
     private:
-        
+        bool isOpen = false;
 };

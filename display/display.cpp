@@ -142,7 +142,7 @@ void Display::render() {
             
             drawGrid(*g); // draw the grid.
 
-            setDrawId(""); // Once drawn, set the draw ID to empty to safeguard unnecessary re-renders.
+            //setDrawId(""); // Once drawn, set the draw ID to empty to safeguard unnecessary re-renders.
         }
 
         

@@ -65,6 +65,7 @@ class Grid {
         std::string getId() const { return id; };
         std::string& getText() {return text; };
         std::vector<float> getCoordinates() const { return coordinates; };
+        std::vector<float>& getCoordinates() { return coordinates; };
         std::vector<float>& getAbsoluteCoords() { return absoluteCoordinates; };
         std::vector<float> getAbsoluteCoords() const { return absoluteCoordinates; };
         std::vector<Grid*>& getElements() { return elements; };
@@ -85,7 +86,8 @@ class Grid {
         void setWidth(const std::string& width) { this->width = width; }
         void setHeight(const std::string& height) { this->height = height; }
         void setAbsoluteCoords (const std::vector<float>& coordinates) { this->absoluteCoordinates = coordinates; };
-        void setInteractable(bool interactable) { this->interactable = interactable; };
+        void setCoordinates(const std::vector<float>& coordinates); /// @brief sets the relative coordinates of the grid element. This needs to handle re-setting the absolute coordinates of its elements.
+        void setInteractable(bool interactable);
         void setOnMouseOver(std::function<void()> onMouseOver) { this->onMouseOver = std::move(onMouseOver); };
         void setOnMouseOut(std::function<void()> onMouseOut) { this->onMouseOut = std::move(onMouseOut); };
         void setOnClick(std::function<void()> onClick) { this->onClick = std::move(onClick); };

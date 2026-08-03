@@ -131,3 +131,38 @@ void Grid::addRow(Grid* row) {
     
     elementsInThisContainer.push_back(row);
 }
+
+void Grid::setCoordinates(const std::vector<float>& coordinates) {
+    this->coordinates = coordinates;
+
+    // update absolute coordinates
+    if(container) {
+        const std::vector<float>& containerCoords = container->getAbsoluteCoords();
+        absoluteCoordinates[0] = coordinates[0] + containerCoords[0];
+        absoluteCoordinates[1] = coordinates[1] + containerCoords[1];
+        absoluteCoordinates[2] = absoluteCoordinates[0] + getWidthPx();
+        absoluteCoordinates[3] = absoluteCoordinates[1] + getHeightPx();
+    } else {
+        absoluteCoordinates[0] = coordinates[0];
+        absoluteCoordinates[1] = coordinates[1];
+        absoluteCoordinates[2] = absoluteCoordinates[0] + getWidthPx();
+        absoluteCoordinates[3] = absoluteCoordinates[1] + getHeightPx();
+    }
+
+    // update the absolute coordinates of all elements in this grid.
+    for(Grid* elem : elements) {
+        elem->setCoordinates(elem->getCoordinates());
+    }
+}
+
+// I swear I had already written this code. Anyway here it is.
+void Grid::setInteractable(bool interactable) {
+    this->interactable = interactable;
+
+    auto container = getContainer();
+
+    if(interactable && container) {
+        // if this grid is interactable, then all of its elements should be interactable as well.
+        container->setInteractable(true);
+    }
+}
