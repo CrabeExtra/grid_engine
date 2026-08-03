@@ -1,5 +1,4 @@
 #include "display.hpp"
-#include "grid.hpp"
 #include "window.hpp"
 
 
@@ -168,3 +167,52 @@ void Display::invalidateWindow() {
 void Display::startMessageLoop() {
     window.messageLoop();
 }
+
+Grid* Display::addRootGrid(GridConfig config) {
+    Grid* rootGrid = new Grid(config);
+    rootGrids.back().emplace("root", rootGrid);
+    return rootGrid;
+}
+
+Grid* _createGridAndAddToMap(GridConfig config, std::unordered_map<std::string, Grid*>& map, std::string containerId) {
+    auto it = map.find(containerId);
+    if (it != map.end()) {
+        config.container = it->second; // set the container to the found grid.
+        Grid* g = new Grid(config); // create the grid (adds element to container in constructor)
+        map.emplace(config.id, g); // place on map for O(1) lookups if I need them.
+        return g;
+    }
+
+    return nullptr;
+}
+
+Grid* Display::addGridElement(GridConfig config, const std::string& containerId, int rootGridIndex) {
+
+    if (rootGridIndex >= -1 && rootGridIndex < static_cast<int>(rootGrids.size())) {
+        if(rootGridIndex == -1) {
+            for(auto& map : rootGrids) {
+                Grid* g = _createGridAndAddToMap(config, map, containerId);
+                if(g) return g;
+            }
+        } else {
+            auto& map = rootGrids[rootGridIndex];
+            Grid* g = _createGridAndAddToMap(config, map, containerId);
+            if(g) return g;
+        }
+
+    } else {
+        Log::error("Invalid rootGridIndex in addElement call, index: " + std::to_string(rootGridIndex) 
+            + ", grid ID: " + config.id 
+            + ", rootGrid size: " + std::to_string(rootGrids.size())
+        );
+    }
+
+    Log::error("Element not added, no valid container found as specified: " + std::to_string(rootGridIndex) 
+        + ", grid ID: " + config.id 
+        + ", container ID: " + containerId
+        + ", rootGrid size: " + std::to_string(rootGrids.size())
+    );
+
+    return nullptr;
+}
+

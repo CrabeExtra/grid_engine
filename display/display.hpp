@@ -40,6 +40,8 @@ class Display
             [this](int x, int y) {
                 onLMouseInput(x, y);
             });
+
+            rootGrids.emplace_back(); // add an empty vector to the rootGrids list.
         }
 
         void onResize(float width, float height);
@@ -62,8 +64,11 @@ class Display
 
         std::vector<std::unordered_map<std::string, Grid*>>& getRootGrids() { return rootGrids; } 
 
+        Grid* addRootGrid(GridConfig config); /// @brief Add a root grid to the vector. Note that standard practice is to use the grid ID "root".
+        Grid* addGridElement(GridConfig config, const std::string& containerId = "", int rootGridIndex = -1); /// @brief Nest a grid element to a specified container grid.
+
         // mouse 
-        // TODO: could move the mousemove functions to inputand simply define behaviour here.
+        // TODO: could move the mousemove functions to input and simply define behaviour here. (TODO: investigate if I've already done this)
         void onMouseMove(int x, int y);
         Grid* getMouseOver(int x, int y);
 

@@ -140,7 +140,7 @@ class Grid {
         GridDirection gridDirection;
 
         // mouse events.
-        bool interactable = true;
+        bool interactable = false; // This should default to false, be set to true on case where it must be interactable.
 
         // structure
         Grid* container;
