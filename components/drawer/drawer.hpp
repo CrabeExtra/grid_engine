@@ -31,6 +31,11 @@ class Drawer : public Grid {
             
             setContainer(container); // set the container of the button to the specified container grid.
 
+            if(!config.leftHand) {
+                setCoordinates({ container->getWidthPx() - getWidthPx(), 0.0f });
+                setText("<");
+            }
+
             std::vector<Grid*>& elements = container->getElements();
             elements.insert(elements.begin(), this); // add the button to the front of the elements vector so it is searched first for mouse input.
             map.emplace(getId(), this);
@@ -40,7 +45,7 @@ class Drawer : public Grid {
             // sidenav is off screen
             Grid* sideNav = new Grid({
                 .id = "drawer_side_nav",
-                .coordinates = { -200.0f, 0.0f },
+                .coordinates = { config.leftHand ? -200.0f : container->getWidthPx() + 2.0f, 0.0f },
                 .size = {
                     .width = "199px",
                     .height = "100%"
@@ -70,16 +75,17 @@ class Drawer : public Grid {
                 auto& sideNavCoords = sideNav->getCoordinates();
                 auto& buttonCoords = getCoordinates();
 
+                // can certainly make this more elegant.
                 if(isOpen) {
                     // open the drawer
-                    sideNav->setCoordinates({ sideNavCoords[0] + 200.0f, sideNavCoords[1] });
-                    setCoordinates({ buttonCoords[0] + 200.0f, buttonCoords[1] });
-                    setText("<");
+                    sideNav->setCoordinates({ config.leftHand ? sideNavCoords[0] + 199.0f : sideNavCoords[0] - 199.0f, sideNavCoords[1] });
+                    setCoordinates({ config.leftHand ? buttonCoords[0] + 199.0f : buttonCoords[0] - 199.0f, buttonCoords[1] });
+                    setText(config.leftHand ? "<" : ">");
                 } else {
                     // close the drawer
-                    sideNav->setCoordinates({ sideNavCoords[0] - 200.0f, sideNavCoords[1] });
-                    setCoordinates({ buttonCoords[0] - 200.0f, buttonCoords[1] });
-                    setText(">");
+                    sideNav->setCoordinates({ config.leftHand ? sideNavCoords[0] - 199.0f : sideNavCoords[0] + 199.0f, sideNavCoords[1] });
+                    setCoordinates({ config.leftHand ? buttonCoords[0] - 199.0f : buttonCoords[0] + 199.0f, buttonCoords[1] });
+                    setText(config.leftHand ? ">" : "<");
                 }
 
                 config.display.invalidateWindow(); // trigger render.
