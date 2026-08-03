@@ -42,7 +42,7 @@ class Drawer : public Grid {
                 .id = "drawer_side_nav",
                 .coordinates = { -200.0f, 0.0f },
                 .size = {
-                    .width = "200px",
+                    .width = "199px",
                     .height = "100%"
                 },
                 .style = {
@@ -55,6 +55,8 @@ class Drawer : public Grid {
 
             elements.insert(elements.begin(), sideNav);
             map.emplace(sideNav->getId(), sideNav);
+
+            sideNav->setContainer(container);
 
             for(auto& menuElementConfig : config.menuElements) {
                 menuElementConfig.container = sideNav; // set the container of the menu elements to the side nav grid.

@@ -65,7 +65,7 @@ void Window::createWindow() {
         NULL,       // Menu
         impl->hInstance,  // Instance handle
         this        // Additional application data (just injecting window context)
-        );
+    );
 
     if (impl->hwnd == NULL)
     {

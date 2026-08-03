@@ -13,7 +13,9 @@ class Display
     public:
         Display(
             HINSTANCE hInstance, 
-            int nCmdShow
+            int nCmdShow,
+            int screenWidth = WINDOW_WIDTH,
+            int screenHeight = WINDOW_HEIGHT
         ) : 
             window(
                 hInstance, 
@@ -42,6 +44,10 @@ class Display
             });
 
             rootGrids.emplace_back(); // add an empty vector to the rootGrids list.
+
+            WINDOW_WIDTH = screenWidth;
+            WINDOW_HEIGHT = screenHeight;
+            Log::info("width: " + std::to_string(WINDOW_WIDTH) + ", height: " + std::to_string(WINDOW_HEIGHT));
         }
 
         void onResize(float width, float height);

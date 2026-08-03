@@ -70,7 +70,6 @@ Grid* Display::getMouseOver(int x, int y) {
     Grid* g = map["root"]; // TODO: what to do with the floating "root".
 
     return g->getLeafAtLocation(x, y);
-    
 }   
 
 // TODO: Handle specific mouseButton.
