@@ -38,7 +38,7 @@ Window::Window(
 void Window::createWindow() {
 
     // Register the window class.
-    const wchar_t CLASS_NAME[]  = L"Calculator"; // name of my window.
+    const wchar_t CLASS_NAME[]  = L"Map_Editor"; // name of my window.
 
     WNDCLASSW wc = { }; // this holds all information regarding the window - style, icon, cursor, background
 
@@ -48,12 +48,19 @@ void Window::createWindow() {
 
     RegisterClassW(&wc);
 
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+    // place window in center of the screen.
+    X = (screenWidth - WINDOW_WIDTH) / 2;
+    Y = (screenHeight - WINDOW_HEIGHT) / 2;
+
     // Create the window.
 
     impl->hwnd = CreateWindowExW(
         0,                              // Optional window styles.
         CLASS_NAME,                     // Window class
-        L"Calculator",                  // Window text
+        L"Map_Editor",                  // Window text
         WS_OVERLAPPEDWINDOW,            // Window style
 
         // Size and position
@@ -98,7 +105,7 @@ LRESULT CALLBACK Window::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM 
 
                 UINT width = rc.right - rc.left;
                 UINT height = rc.bottom - rc.top;
-
+                
                 window->impl->height = height;
                 window->impl->width = width;
 

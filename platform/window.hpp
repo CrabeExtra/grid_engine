@@ -10,8 +10,7 @@
 #include "Windows.h"
 #include "key.hpp"
 
-static int WINDOW_WIDTH = 360;
-static int WINDOW_HEIGHT = 480;
+
 
 /**
  * Generic Window class. This is kept OS and rendering API agnostic. Just contains interface required for the grid system. These functions
@@ -19,9 +18,11 @@ static int WINDOW_HEIGHT = 480;
  */
 class Window {
     public: 
+        static inline int WINDOW_WIDTH = 1000;
+        static inline int WINDOW_HEIGHT = 480;
 
-        static constexpr int X = CW_USEDEFAULT;
-        static constexpr int Y = CW_USEDEFAULT;
+        int X = CW_USEDEFAULT;
+        int Y = CW_USEDEFAULT;
         // core window initialisationa and loop. (might need to revisit these types when making OS agnostic - specifically when looking into Linux implementation)
         Window(
             HINSTANCE hInstance,
