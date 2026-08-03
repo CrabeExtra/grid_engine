@@ -10,6 +10,7 @@ add_subdirectory(layout)
 add_subdirectory(log)
 add_subdirectory(display)
 add_subdirectory(input)
+add_subdirectory(components)
 
 add_library(grid_engine INTERFACE)
 
@@ -19,6 +20,7 @@ target_link_libraries(grid_engine INTERFACE
     log 
     input
     display
+    components
 )
 
 install(DIRECTORY resources/

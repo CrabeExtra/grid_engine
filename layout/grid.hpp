@@ -90,6 +90,7 @@ class Grid {
         void setOnMouseOut(std::function<void()> onMouseOut) { this->onMouseOut = std::move(onMouseOut); };
         void setOnClick(std::function<void()> onClick) { this->onClick = std::move(onClick); };
         void setText(const std::string& text) { this->text = text; };
+        void setContainer(Grid* container) { this->container = container; };
 
         // structural
         void addElement(Grid* elem);

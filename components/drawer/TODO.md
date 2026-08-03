@@ -1,0 +1,4 @@
+- This is essentially a drawerFactory, I mightAdd this directly to the grid engine under a generic module later so I can add generic commonly used formats of grids with simple interfaces.
+- Drawer being a navbar on the side that expands when a button is clicked, containing a list of options (create new sprite, create new maps, browse sprites, browse maps). But drawer itself should be generic, with onclicks and titles of the buttons being the only things specified.
+- Style of the button should be able to be specified, but a default should also exist.
+- As of 03/08/2026, if the drawer button's config is overridden, so are all defaults, I should address this.
